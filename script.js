@@ -15,6 +15,24 @@ document.addEventListener('DOMContentLoaded',function(){
       }
 
       let snake=[{x:160,y:200},{x:140,y:200},{x:120,y:200}] // this is you starting snake size in the grid 
-      
+
+
+      function initiateGame(){
+        const scoreBoard=document.createElement('div')
+        scoreBoard.id='score-board'
+
+        document.body.insertBefore(scoreBoard,gamearena) // insert score before the arena game 
+
+        const startButton=document.createElement('button')
+
+        startButton.textContent='Start Game';
+        startButton.classList.add('start-button');
+
+        document.body.append(startButton)
+
+    
+      }
+      initiateGame()
+
 
 })
