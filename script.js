@@ -14,19 +14,63 @@ document.addEventListener('DOMContentLoaded',function(){
         y:200
       }
 
-    let snake=[{x:160,y:200},{x:140,y:200},{x:120,y:200}] // this is you starting snake size in the grid 
+    let snake=[{x:160,y:200},{x:140,y:200},{x:120,y:200}] // this is you starting snake size in the grid  {head body tail }
+
+
+    let dx=cellSize; // 
+    let dy=0;
+
+
+    function changeDirection(e){
+     
+        console.log("key are the press ",e)
+
+        
+        const isGoingDown =  dy==cellSize
+        const isGoingUp   =   dy==-cellSize
+        const isGoingRight = dy==cellSize;
+        const isGoingLeft =  dy==-cellSize;
+
+
+
+
+
+        if(e.key=="ArrowUp"  && !isGoingDown){
+            dx=0;
+            dy=-cellSize;
+
+        }else if(e.key=="ArrowDown" && !isGoingUp){
+           dx=0;
+           dy=cellSize  
+        }
+        else if(e.key=="ArrowLeft'" &&  !isGoingRight){
+           dx=-cellSize;
+           dy=0
+        }
+        else if(e.key=="ArrowRight" && !isGoingLeft){
+           dx=cellSize;
+           dy=0;
+        }
+
+
+    }
 
 
     function drawDiv(x,y,className){
         const divElement=document.createElement('div');
         divElement.classList.add(className)
-        divElement.style.top=`${y} px`;
-        divElement.style.left=`${x} px `;
+        divElement.style.top=`${y}px`;
+        divElement.style.left=`${x}px `;
         return divElement;
     }
 
     function drawFoodAndSnake(){
         gamearena.innerHTML= '';
+
+        snake.forEach((snakecell)=>{
+            const snakeElement=drawDiv(snakecell.x,snakecell.y,'snake')
+            gamearena.append(snakeElement)
+        })
 
         const foodElement= drawDiv(food.x , food.y, 'food');
         gamearena.appendChild(foodElement)
@@ -37,8 +81,13 @@ document.addEventListener('DOMContentLoaded',function(){
 
         if(!gameStarted){
             gameStarted=true;
+           
+            document.addEventListener('keydown',changeDirection);
 
-            // gameLoop todo 
+
+            drawFoodAndSnake()
+
+           
         }
         
     }
