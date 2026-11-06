@@ -21,6 +21,23 @@ document.addEventListener('DOMContentLoaded',function(){
     let dy=0;
 
 
+
+    function updateSnake(){
+       const newHead={x:snake[0].x +dx , y:snake[0].y +dy} 
+       
+       snake.unshift(newHead);
+
+       if(newHead.x==food.x && newHead.y == food.y){
+        score+=10;  // add in the head score 
+
+        // todo move food 
+
+       }else{
+        snake.pop() // remove sanke tail 
+       }
+
+    }
+
     function changeDirection(e){
      
         console.log("key are the press ",e)
