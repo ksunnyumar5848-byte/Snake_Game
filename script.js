@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded',function(){
     let dx=cellSize; // 
     let dy=0;
 
+    let intervalId;
+
 
 
     function updateSnake(){
@@ -93,6 +95,41 @@ document.addEventListener('DOMContentLoaded',function(){
         gamearena.appendChild(foodElement)
     }
 
+    function isGameOver(){
+
+       // snake collision are it self 
+
+        for(let i = 1; i < snake.length; i++) {
+            if(snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
+                return true;
+            }
+        }
+
+
+
+        // wall collision cheak 
+
+        const hitLeftWall = snake[0].x<0; // snake[0] -> head
+        const hitRightWall=snake[0].x >arenaSize-cellSize;
+        const hitTopWall=snake[0].y < 0;
+        const hitBottomWall=snake[0].y > arenaSize-cellSize;
+
+        return hitLeftWall || hitRightWall || hitBottomWall || hitTopWall;
+
+
+
+    }
+
+    function gameLoop(){
+      intervalId =  setInterval(()=>{
+          if(isGameOver()){
+            clearInterval(intervalId);
+            gameStarted=false;
+          }
+          updateSnake();
+          drawFoodAndSnake()
+        },200)
+    }
 
     function runGame(){
 
@@ -102,7 +139,7 @@ document.addEventListener('DOMContentLoaded',function(){
             document.addEventListener('keydown',changeDirection);
 
 
-            drawFoodAndSnake()
+            gameLoop()
 
            
         }
