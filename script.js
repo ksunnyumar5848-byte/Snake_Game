@@ -21,7 +21,21 @@ document.addEventListener('DOMContentLoaded',function(){
     let dy=0;
 
     let intervalId;
+    let gameSpeed=200;
+     
 
+    function moveFood(){
+
+        let newx, newy;
+
+        do{
+            newx=Math.floor(Math.random()*30)*cellSize;
+            newy=Math.floor(Math.random()*30)*cellSize;
+
+        }while(snake.some(snakecell => snakecell.x==newx && snakecell.y ==newy));
+
+        food={x:newx ,y:newy};
+    }
 
 
     function updateSnake(){
@@ -33,11 +47,24 @@ document.addEventListener('DOMContentLoaded',function(){
         score+=10;  // add in the head score 
 
         // todo move food 
+        moveFood()
+
+        if(gameSpeed > 50){
+            
+            clearInterval(intervalId);
+            gameSpeed-=10;
+            gameLoop();
+        }
 
        }else{
         snake.pop() // remove sanke tail 
        }
 
+    }
+    function drawScoreBoard(){
+            const scoreBoard=document.getElementById('score-board');
+
+            scoreBoard.textContent=`Score : ${score}`;
     }
 
     function changeDirection(e){
@@ -45,28 +72,28 @@ document.addEventListener('DOMContentLoaded',function(){
         console.log("key are the press ",e)
 
         
-        const isGoingDown =  dy==cellSize
-        const isGoingUp   =   dy==-cellSize
-        const isGoingRight = dy==cellSize;
-        const isGoingLeft =  dy==-cellSize;
+        const isGoingDown =  dy===cellSize
+        const isGoingUp   =   dy===-cellSize
+        const isGoingRight = dy===cellSize;
+        const isGoingLeft =  dy===-cellSize;
 
 
 
 
 
-        if(e.key=="ArrowUp"  && !isGoingDown){
+        if(e.key==="ArrowUp"  && !isGoingDown){
             dx=0;
             dy=-cellSize;
 
-        }else if(e.key=="ArrowDown" && !isGoingUp){
+        }else if(e.key==="ArrowDown" && !isGoingUp){
            dx=0;
            dy=cellSize  
         }
-        else if(e.key=="ArrowLeft'" &&  !isGoingRight){
+        else if(e.key==="ArrowLeft" &&  !isGoingRight){
            dx=-cellSize;
            dy=0
         }
-        else if(e.key=="ArrowRight" && !isGoingLeft){
+        else if(e.key==="ArrowRight" && !isGoingLeft){
            dx=cellSize;
            dy=0;
         }
@@ -125,10 +152,14 @@ document.addEventListener('DOMContentLoaded',function(){
           if(isGameOver()){
             clearInterval(intervalId);
             gameStarted=false;
+            alert('game-over')
+            return
           }
           updateSnake();
           drawFoodAndSnake()
-        },200)
+          drawScoreBoard();
+          
+        },gameSpeed)
     }
 
     function runGame(){
